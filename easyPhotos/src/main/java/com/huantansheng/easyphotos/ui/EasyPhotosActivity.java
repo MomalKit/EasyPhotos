@@ -746,7 +746,6 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         initAlbumItems();
         shouldShowMenuDone();
         setClick(R.id.iv_album_items, R.id.tv_clear, R.id.tv_delete, R.id.tv_select_all, R.id.iv_second_menu, R.id.tv_puzzle);
-        
         setClick(tvAlbumItems, rootViewAlbumItems, tvDone, tvOriginal, tvPreview, ivCamera);
 
     }
