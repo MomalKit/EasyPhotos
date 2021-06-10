@@ -120,6 +120,19 @@
                 android:textColor="@color/easy_photos_fg_primary" />
 
             <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_second_level_menu_easy_photos"
+                android:gravity="center"
+                android:minWidth="80dp"
+                android:padding="8dp"
+                android:text="@string/delete_easy_photos"
+                android:textColor="@color/easy_photos_fg_primary" />
+
+            <TextView
                 android:id="@+id/tv_select_all"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
