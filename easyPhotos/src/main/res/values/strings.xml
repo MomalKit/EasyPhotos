@@ -38,6 +38,8 @@
 
     <string name="select_all_easy_photos">全选</string>
 
+    <string name="delete_easy_photos">删除</string>
+
     <string name="no_photos_easy_photos">没有符合要求的图片，拍一张吧</string>
 
     <string name="no_videos_easy_photos">没有符合要求的视频</string>
