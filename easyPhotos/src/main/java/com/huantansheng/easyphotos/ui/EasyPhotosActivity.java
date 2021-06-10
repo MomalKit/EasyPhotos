@@ -745,7 +745,8 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
 
         initAlbumItems();
         shouldShowMenuDone();
-        setClick(R.id.iv_album_items, R.id.tv_clear, R.id.tv_select_all, R.id.iv_second_menu, R.id.tv_puzzle);
+        setClick(R.id.iv_album_items, R.id.tv_clear, R.id.tv_delete, R.id.tv_select_all, R.id.iv_second_menu, R.id.tv_puzzle);
+        
         setClick(tvAlbumItems, rootViewAlbumItems, tvDone, tvOriginal, tvPreview, ivCamera);
 
     }
@@ -795,7 +796,50 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
             photosAdapter.change();
             shouldShowMenuDone();
             processSecondMenu();
-        }else if (R.id.tv_select_all == id) {
+        } else if (R.id.tv_delete == id) {
+            int size = Result.photos.size();
+            new AlertDialog.Builder(MainActivity.this);
+            normalDialog.setIcon(R.drawable.ic_delete_easy_photos);
+            normalDialog.setTitle("删除图片")
+            normalDialog.setMessage("你确认要删除所选图片吗?");
+            normalDialog.setPositiveButton("确定",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            try {
+                                for (int i = 0; i < size; i++) {
+                                    Photo photo = Result.photos.get(i);
+                                    File file = new File(photo.path);
+                                    // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+                                    if (file.exists() && file.isFile()) {
+                                        if (file.delete()) {
+                                            Log.d("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
+                                            return true;
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "删除单个文件" + filePath$Name + "失败！", Toast.LENGTH_SHORT).show();
+                                            return false;
+                                        }
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "删除单个文件失败：" + filePath$Name + "不存在！", Toast.LENGTH_SHORT).show();
+                                        return false;
+                                    }
+                                }
+                                photosAdapter.change();
+                                shouldShowMenuDone();
+                                processSecondMenu();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            normalDialog.setNegativeButton("取消",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show();
+        } else if (R.id.tv_select_all == id) {
             for (Object item:photoList) {
                 Result.addPhoto((Photo)item);
             }
