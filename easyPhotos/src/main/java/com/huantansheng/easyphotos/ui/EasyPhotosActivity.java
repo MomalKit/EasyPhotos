@@ -830,6 +830,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
                                         return;
                                     }
                                 }
+                                Result.removeAll();
                                 hasPermissions();
                             } catch (Exception e) {
                                 e.printStackTrace();
