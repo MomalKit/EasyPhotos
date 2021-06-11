@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -36,6 +37,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.exifinterface.media.ExifInterface;
@@ -795,56 +797,53 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
             photosAdapter.change();
             shouldShowMenuDone();
             processSecondMenu();
-        } else if (R.id.tv_delete == id) {
-            int size = Result.photos.size();
-            new AlertDialog.Builder(MainActivity.this)
-                    .setIcon(R.drawable.ic_delete_easy_photos)
-                    .setTitle("删除图片")
-                    .setMessage("你确认要删除所选图片吗?")
-                    .setPositiveButton("确定",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    try {
-                                        for (int i = 0; i < size; i++) {
-                                            Photo photo = Result.photos.get(i);
-                                            File file = new File(photo.path);
-                                            // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
-                                            if (file.exists() && file.isFile()) {
-                                                if (file.delete()) {
-                                                    Log.d("--Method--", "Copy_Delete.deleteSingleFile: 删除单个文件" + filePath$Name + "成功！");
-                                                    return true;
-                                                } else {
-                                                    Toast.makeText(getApplicationContext(), "删除单个文件" + filePath$Name + "失败！", Toast.LENGTH_SHORT).show();
-                                                    return false;
-                                                }
-                                            } else {
-                                                Toast.makeText(getApplicationContext(), "删除单个文件失败：" + filePath$Name + "不存在！", Toast.LENGTH_SHORT).show();
-                                                return false;
-                                            }
-                                        }
-                                        photosAdapter.change();
-                                        shouldShowMenuDone();
-                                        processSecondMenu();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            })
-                    .setNegativeButton("取消",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            }).show();
         } else if (R.id.tv_select_all == id) {
-            for (Object item:photoList) {
-                Result.addPhoto((Photo)item);
+            for (Object item : photoList) {
+                Result.addPhoto((Photo) item);
             }
             photosAdapter.change();
             shouldShowMenuDone();
             processSecondMenu();
+        } else if (R.id.tv_delete == id) {
+            new AlertDialog.Builder(EasyPhotosActivity.this)
+                    .setIcon(R.drawable.ic_delete_easyy_photos)
+                    .setTitle("删除图片")
+                    .setMessage("你确认要删除所选图片吗?")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                int size = Result.photos.size();
+                                for (int i = 0; i < size; i++) {
+                                    Photo photo = Result.photos.get(i);
+                                    File file = new File(photo.path);
+                                    // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+                                    if (file.exists() && file.isFile()) {
+                                        if (file.delete()) {
+                                            Log.d("Hon", "Copy_Delete.deleteSingleFile: 删除单个文件" + photo.path + "成功！");
+                                            return;
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "删除单个文件" + photo.path + "失败！", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "删除单个文件失败：" + photo.path + "不存在！", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                }
+                                photosAdapter.change();
+                                shouldShowMenuDone();
+                                processSecondMenu();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show();
         } else if (R.id.tv_original == id) {
             if (!Setting.originalMenuUsable) {
                 Toast.makeText(getApplicationContext(), Setting.originalMenuUnusableHint, Toast.LENGTH_SHORT).show();
@@ -1058,10 +1057,8 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
             if (Setting.isOnlyVideo()) {
                 Toast.makeText(getApplicationContext(), getString(R.string.selector_reach_max_video_hint_easy_photos
                         , Setting.count), Toast.LENGTH_SHORT).show();
-
             } else if (Setting.showVideo) {
-                Toast.makeText(getApplicationContext(), getString(R.string.selector_reach_max_hint_easy_photos,
-                        Setting.count), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.selector_reach_max_hint_easy_photos), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.selector_reach_max_image_hint_easy_photos,
                         Setting.count), Toast.LENGTH_SHORT).show();
