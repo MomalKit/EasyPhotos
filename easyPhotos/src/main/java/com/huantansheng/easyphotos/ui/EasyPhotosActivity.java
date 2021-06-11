@@ -821,7 +821,6 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
                                     if (file.exists() && file.isFile()) {
                                         if (file.delete()) {
                                             Log.d("Hon", "Copy_Delete.deleteSingleFile: 删除单个文件" + photo.path + "成功！");
-                                            return;
                                         } else {
                                             Toast.makeText(getApplicationContext(), "删除单个文件" + photo.path + "失败！", Toast.LENGTH_SHORT).show();
                                             return;
@@ -831,7 +830,13 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
                                         return;
                                     }
                                 }
-                                photosAdapter.change();
+                                Result.removeAll();
+                                photoList.clear();
+                                photoList.addAll(albumModel.getCurrAlbumItemPhotos(0));
+                                photosAdapter.notifyDataSetChanged();
+                                albumItemList.clear();
+                                albumItemList.addAll(albumModel.getAlbumItems());
+                                albumItemsAdapter.notifyDataSetChanged();
                                 shouldShowMenuDone();
                                 processSecondMenu();
                             } catch (Exception e) {
