@@ -830,15 +830,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
                                         return;
                                     }
                                 }
-                                Result.removeAll();
-                                photoList.clear();
-                                photoList.addAll(albumModel.getCurrAlbumItemPhotos(0));
-                                photosAdapter.notifyDataSetChanged();
-                                albumItemList.clear();
-                                albumItemList.addAll(albumModel.getAlbumItems());
-                                albumItemsAdapter.notifyDataSetChanged();
-                                shouldShowMenuDone();
-                                processSecondMenu();
+                                hasPermissions();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
