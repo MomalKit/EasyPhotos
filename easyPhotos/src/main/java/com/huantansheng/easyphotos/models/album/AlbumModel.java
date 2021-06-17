@@ -289,6 +289,7 @@ public class AlbumModel {
                 album.addAlbumItem(albumName, folderPath, path, uri);
                 album.getAlbumItem(albumName).addImageItem(imageItem);
             } while (cursor.moveToNext() && canRun);
+            int targetIndex = 0;
             for (int i = 0; i < album.albumItems.size(); i++) {
                 AlbumItem temp = album.albumItems.get(i);
                 if ("BeautyEv".equals(temp.name)) {
