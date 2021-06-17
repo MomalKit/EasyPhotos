@@ -25,6 +25,7 @@ import com.huantansheng.easyphotos.utils.String.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * 专辑模型
@@ -288,6 +289,17 @@ public class AlbumModel {
                 album.addAlbumItem(albumName, folderPath, path, uri);
                 album.getAlbumItem(albumName).addImageItem(imageItem);
             } while (cursor.moveToNext() && canRun);
+            for (int i = 0; i < album.albumItems.size(); i++) {
+                AlbumItem temp = album.albumItems.get(i);
+                if ("BeautyEv".equals(temp.name)) {
+                    targetIndex = i;
+                    break;
+                }
+            }
+            Collections.swap(album.albumItems, targetIndex, 0);
+            if(album.albumItems.size() > 2){
+                Collections.swap(album.albumItems, targetIndex, 1);
+            }
             cursor.close();
         }
 //        Log.d(TAG, "initAlbum: " + (System.currentTimeMillis() - now));
