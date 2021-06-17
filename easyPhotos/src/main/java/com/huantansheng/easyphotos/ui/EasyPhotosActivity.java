@@ -774,7 +774,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         }
         for (int i = 0; i < albumItemList.size(); i++) {
             AlbumItem temp = albumItemList.get(i);
-            if(temp.name == 'BeautyEv'){
+            if(temp.name == "BeautyEv"){
                 albumItemList.remove(i);
                 albumItemList.add(0,temp);
             }
