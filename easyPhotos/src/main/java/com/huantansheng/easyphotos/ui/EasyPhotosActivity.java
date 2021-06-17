@@ -53,7 +53,6 @@ import com.huantansheng.easyphotos.constant.Key;
 import com.huantansheng.easyphotos.models.ad.AdListener;
 import com.huantansheng.easyphotos.models.album.AlbumModel;
 import com.huantansheng.easyphotos.models.album.entity.Photo;
-import com.huantansheng.easyphotos.models.album.entity.AlbumItem;
 import com.huantansheng.easyphotos.result.Result;
 import com.huantansheng.easyphotos.setting.Setting;
 import com.huantansheng.easyphotos.ui.adapter.AlbumItemsAdapter;
@@ -76,7 +75,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Collections;
 
 public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsAdapter.OnClickListener, PhotosAdapter.OnClickListener, AdListener, View.OnClickListener {
 
@@ -102,7 +100,6 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
     private AnimatorSet setShow;
 
     private int currAlbumItemIndex = 0;
-    private int targetIndex = 0;
 
     private ImageView ivCamera;
     private TextView tvTitle;
@@ -707,15 +704,14 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         }
         mSecondMenus = findViewById(R.id.m_second_level_menu);
         int columns = getResources().getInteger(R.integer.photos_columns_easy_photos);
-        initAlbumItems();
         tvAlbumItems = findViewById(R.id.tv_album_items);
-        tvAlbumItems.setText(albumModel.getAlbumItems().get(targetIndex).name);
+        tvAlbumItems.setText(albumModel.getAlbumItems().get(0).name);
         tvDone = findViewById(R.id.tv_done);
         rvPhotos = findViewById(R.id.rv_photos);
         ((SimpleItemAnimator) rvPhotos.getItemAnimator()).setSupportsChangeAnimations(false);
         //去除item更新的闪光
         photoList.clear();
-        photoList.addAll(albumModel.getCurrAlbumItemPhotos(targetIndex));
+        photoList.addAll(albumModel.getCurrAlbumItemPhotos(0));
         int index = 0;
         if (Setting.hasPhotosAd()) {
             photoList.add(index, Setting.photosAdView);
@@ -749,6 +745,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         }
         tvPreview = findViewById(R.id.tv_preview);
 
+        initAlbumItems();
         shouldShowMenuDone();
         setClick(R.id.iv_album_items, R.id.tv_clear, R.id.tv_delete, R.id.tv_select_all, R.id.iv_second_menu, R.id.tv_puzzle);
         setClick(tvAlbumItems, rootViewAlbumItems, tvDone, tvOriginal, tvPreview, ivCamera);
@@ -774,17 +771,6 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
                 albumItemsAdIndex = albumItemList.size() - 1;
             }
             albumItemList.add(albumItemsAdIndex, Setting.albumItemsAdView);
-        }
-        for (int i = 0; i < albumItemList.size(); i++) {
-            AlbumItem temp = (AlbumItem) albumItemList.get(i);
-            if ("BeautyEv".equals(temp.name)) {
-                targetIndex = i;
-                break;
-            }
-        }
-        Collections.swap(albumItemList, targetIndex, 0);
-        if(albumItemList.size() > 2){
-            Collections.swap(albumItemList, targetIndex, 1);
         }
         albumItemsAdapter = new AlbumItemsAdapter(this, albumItemList, 0, this);
         rvAlbumItems.setLayoutManager(new LinearLayoutManager(this));
